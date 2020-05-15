@@ -7,17 +7,18 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout
 import com.vaadin.flow.router.BeforeEnterEvent
 import com.vaadin.flow.router.BeforeEnterObserver
 import com.vaadin.flow.router.Route
+import org.springframework.boot.jdbc.DatabaseDriver
 
 @Route("")
 class MainPage : VerticalLayout(), BeforeEnterObserver {
 
-	var userName = ""
+	private var userName = ""
 
 	init {
 		userName = UI.getCurrent().session.getAttribute("userName")?.toString() ?: ""
 		add("$userName 歡迎光臨！")
-		add(Button("來個問候？") {
-			showMessage("問候你爸爸！")
+		add(Button("看看？") {
+			showMessage("別急，這個網站還沒做好。")
 		})
 	}
 
