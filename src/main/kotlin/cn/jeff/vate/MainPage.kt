@@ -1,5 +1,6 @@
 package cn.jeff.vate
 
+import cn.jeff.vate.comp.MyComp
 import cn.jeff.vate.jpa.VateRepo
 import cn.jeff.vate.utils.showMessage
 import com.vaadin.flow.component.UI
@@ -39,6 +40,7 @@ class MainPage(vateRepo: VateRepo) : VerticalLayout(), BeforeEnterObserver {
 				showMessage("${data[0]}")
 			}
 		})
+		add(MyComp("Bold text."))
 	}
 
 	override fun beforeEnter(event: BeforeEnterEvent?) {
