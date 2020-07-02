@@ -3,6 +3,8 @@ package cn.jeff.vate
 import cn.jeff.vate.comp.MyComp
 import cn.jeff.vate.jpa.VateRepo
 import cn.jeff.vate.utils.showMessage
+import com.vaadin.flow.component.KeyDownEvent
+import com.vaadin.flow.component.KeyPressEvent
 import com.vaadin.flow.component.UI
 import com.vaadin.flow.component.button.Button
 import com.vaadin.flow.component.html.Label
@@ -19,6 +21,13 @@ class MainPage(vateRepo: VateRepo) : VerticalLayout(), BeforeEnterObserver {
 	private var userName = ""
 
 	init {
+		addListener(KeyDownEvent::class.java) {
+			println("keyDownEvent ==> $it")
+		}
+		addListener(KeyPressEvent::class.java) {
+			println("keyPressEvent ==> $it")
+		}
+
 		userName = UI.getCurrent().session.getAttribute("userName")?.toString() ?: ""
 		add(HorizontalLayout(
 				Label("$userName 歡迎光臨！"),
@@ -39,8 +48,23 @@ class MainPage(vateRepo: VateRepo) : VerticalLayout(), BeforeEnterObserver {
 			if (data.isNotEmpty()) {
 				showMessage("${data[0]}")
 			}
+		}.also {
+			addListener(KeyDownEvent::class.java) {
+				println("==== $it ====")
+			}
 		})
-		add(MyComp("Bold text."))
+		val myComp = MyComp("Bold text.")
+		add(myComp)
+
+		val keyInBtn = Button("点击这里开始输入")
+		add(keyInBtn)
+//		keyInBtn.focus()
+		keyInBtn.addFocusListener {
+			it.source.text = "可以开始输入"
+		}
+		keyInBtn.addBlurListener {
+			it.source.text = "请先点这里"
+		}
 	}
 
 	override fun beforeEnter(event: BeforeEnterEvent?) {
