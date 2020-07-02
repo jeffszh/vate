@@ -1,5 +1,8 @@
 package cn.jeff.vate.comp
 
+import com.vaadin.flow.component.Key
+import com.vaadin.flow.component.KeyDownEvent
+import com.vaadin.flow.component.KeyPressEvent
 import com.vaadin.flow.component.button.Button
 import com.vaadin.flow.component.html.Label
 import com.vaadin.flow.component.orderedlayout.FlexComponent
@@ -7,6 +10,11 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout
 import com.vaadin.flow.component.orderedlayout.VerticalLayout
 
 class TypingPane : VerticalLayout() {
+
+	@Suppress("SpellCheckingInspection")
+	private val exampleText = "fdfd jkjk ffddjjkk fdjk jkfd dfdf kjkj dfjk"
+	private val exampleLabel = PngLabel(exampleText)
+	private val inputLabel = PngLabel("")
 
 	init {
 		val timerLabel = Label("计时：")
@@ -18,12 +26,29 @@ class TypingPane : VerticalLayout() {
 					addBlurListener {
 						text = "已暂停，点这里继续"
 					}
+					addListener(KeyPressEvent::class.java) {
+						if (it.key.matches("a")) {
+							inputLabel.addChar('a', 1)
+						} else if (it.key.matches("b")) {
+							inputLabel.addChar('b', 1)
+						} else {
+							println("key=${it.key}, code=${it.code}")
+						}
+					}
+					addListener(KeyDownEvent::class.java) {
+						println("down --- key=${it.key}, code=${it.code}")
+						if (it.key.matches("Backspace")) {
+							inputLabel.addChar('K', 2)
+						}
+					}
 				},
 				timerLabel
 		).also {
 			it.defaultVerticalComponentAlignment = FlexComponent.Alignment.BASELINE
 		})
-		add(PngLabel("Abc"))
+
+		add(exampleLabel)
+		add(inputLabel)
 	}
 
 }
