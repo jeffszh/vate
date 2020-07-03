@@ -1,33 +1,69 @@
 package cn.jeff.vate.comp
 
+import com.vaadin.flow.component.Component
 import com.vaadin.flow.component.html.Image
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout
+import java.util.*
 
-class PngLabel(text: String, initColor: Int = 0) : HorizontalLayout() {
+class PngLabel(text: String, initColor: CharStatus = CharStatus.NORMAL) : HorizontalLayout() {
 
-	companion object {
-		private val colorDirNames = arrayOf("black", "blue", "red")
-	}
-
-	private val chars = text.toMutableList()
-	private val charColors = MutableList(chars.size) { initColor }
+	private val charList = LinkedList<Char>()
+	private val charStatusList = LinkedList<CharStatus>()
+	private val childList = LinkedList<Component>()
 
 	init {
 		isSpacing = false
+		text.forEach {
+			charList.add(it)
+			charStatusList.add(initColor)
+		}
 		rebuild()
 	}
 
 	private fun rebuild() {
 		removeAll()
-		chars.forEachIndexed { i, c ->
-			add(Image("font-png/${colorDirNames[charColors[i]]}/${c.toByte()}.png", "$c"))
+		childList.clear()
+		charList.forEachIndexed { i, c ->
+			val img = Image("font-png/${charStatusList[i].color}/${c.toByte()}.png", "$c")
+			childList.add(img)
+			add(img)
 		}
 	}
 
-	fun addChar(c: Char, color: Int) {
-		chars.add(c)
-		charColors.add(color)
-		add(Image("font-png/${colorDirNames[color]}/${c.toByte()}.png", "$c"))
+	/**
+	 * 在尾部添加字符
+	 *
+	 * @param c 要添加的字符
+	 * @param charStatus 要添加字符的状态
+	 */
+	fun addChar(c: Char, charStatus: CharStatus) {
+		charList.add(c)
+		charStatusList.add(charStatus)
+		val img = Image("font-png/${charStatus.color}/${c.toByte()}.png", "$c")
+		childList.add(img)
+		add(img)
+	}
+
+	fun delChar() {
+		if (charList.isNotEmpty()) {
+			charList.removeLast()
+			charStatusList.removeLast()
+			remove(childList.removeLast())
+		}
+	}
+
+	enum class CharStatus {
+		NORMAL {
+			override val color = "black"
+		},
+		CORRECT {
+			override val color = "blue"
+		},
+		WRONG {
+			override val color = "red"
+		};
+
+		abstract val color: String
 	}
 
 }

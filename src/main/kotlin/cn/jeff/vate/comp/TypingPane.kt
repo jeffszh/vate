@@ -1,6 +1,5 @@
 package cn.jeff.vate.comp
 
-import com.vaadin.flow.component.Key
 import com.vaadin.flow.component.KeyDownEvent
 import com.vaadin.flow.component.KeyPressEvent
 import com.vaadin.flow.component.button.Button
@@ -27,18 +26,22 @@ class TypingPane : VerticalLayout() {
 						text = "已暂停，点这里继续"
 					}
 					addListener(KeyPressEvent::class.java) {
-						if (it.key.matches("a")) {
-							inputLabel.addChar('a', 1)
-						} else if (it.key.matches("b")) {
-							inputLabel.addChar('b', 1)
-						} else {
-							println("key=${it.key}, code=${it.code}")
+						when {
+							it.key.matches("a") -> {
+								inputLabel.addChar('a', PngLabel.CharStatus.CORRECT)
+							}
+							it.key.matches("b") -> {
+								inputLabel.addChar('b', PngLabel.CharStatus.WRONG)
+							}
+							else -> {
+								println("key=${it.key}, code=${it.code}")
+							}
 						}
 					}
 					addListener(KeyDownEvent::class.java) {
 						println("down --- key=${it.key}, code=${it.code}")
 						if (it.key.matches("Backspace")) {
-							inputLabel.addChar('K', 2)
+							inputLabel.delChar()
 						}
 					}
 				},
