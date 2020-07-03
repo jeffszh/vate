@@ -25,21 +25,24 @@ class TypingPane : VerticalLayout() {
 					addBlurListener {
 						text = "已暂停，点这里继续"
 					}
-					addListener(KeyPressEvent::class.java) {
-						when {
-							it.key.matches("a") -> {
-								inputLabel.addChar('a', PngLabel.CharStatus.CORRECT)
-							}
-							it.key.matches("b") -> {
-								inputLabel.addChar('b', PngLabel.CharStatus.WRONG)
-							}
-							else -> {
-								println("key=${it.key}, code=${it.code}")
+					addListener(KeyPressEvent::class.java) { event ->
+						forOneOfPrintableChars({ c ->
+							event.key.matches("$c")
+						}) { c ->
+							val currentLen = inputLabel.length
+							if (currentLen < exampleLabel.length) {
+								val (refChar, _) = exampleLabel[currentLen]
+								val st = if (refChar == c) {
+									PngLabel.CharStatus.CORRECT
+								} else {
+									PngLabel.CharStatus.WRONG
+								}
+								inputLabel.addChar(c, st)
 							}
 						}
 					}
 					addListener(KeyDownEvent::class.java) {
-						println("down --- key=${it.key}, code=${it.code}")
+//						println("down --- key=${it.key}, code=${it.code}")
 						if (it.key.matches("Backspace")) {
 							inputLabel.delChar()
 						}
@@ -52,6 +55,33 @@ class TypingPane : VerticalLayout() {
 
 		add(exampleLabel)
 		add(inputLabel)
+	}
+
+	private fun forOneOfPrintableChars(matcher: (Char) -> Boolean, consumer: (Char) -> Unit) {
+		for (c in 'A'..'Z') {
+			if (matcher(c)) {
+				consumer(c)
+				return
+			}
+		}
+		for (c in 'a'..'z') {
+			if (matcher(c)) {
+				consumer(c)
+				return
+			}
+		}
+		for (c in '0'..'9') {
+			if (matcher(c)) {
+				consumer(c)
+				return
+			}
+		}
+		" !@#$%^&*(),.'\"?/<>".forEach { c ->
+			if (matcher(c)) {
+				consumer(c)
+				return
+			}
+		}
 	}
 
 }
