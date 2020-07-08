@@ -2,6 +2,7 @@ package cn.jeff.vate
 
 import cn.jeff.vate.comp.MyComp
 import cn.jeff.vate.comp.TypingPane
+import cn.jeff.vate.jpa.TypingRepo
 import cn.jeff.vate.jpa.VateRepo
 import cn.jeff.vate.utils.showMessage
 import com.vaadin.flow.component.UI
@@ -17,7 +18,7 @@ import com.vaadin.flow.router.Route
 
 @Route("")
 @Push
-class MainPage(vateRepo: VateRepo) : VerticalLayout(), BeforeEnterObserver {
+class MainPage(vateRepo: VateRepo, typingRepo: TypingRepo) : VerticalLayout(), BeforeEnterObserver {
 
 	private var userName = ""
 
@@ -45,7 +46,7 @@ class MainPage(vateRepo: VateRepo) : VerticalLayout(), BeforeEnterObserver {
 		})
 		add(MyComp("Good good study, day day up!"))
 
-		add(TypingPane())
+		add(TypingPane(userName, typingRepo))
 	}
 
 	override fun beforeEnter(event: BeforeEnterEvent?) {

@@ -1,5 +1,7 @@
 package cn.jeff.vate.comp
 
+import cn.jeff.vate.jpa.TypingRecord
+import cn.jeff.vate.jpa.TypingRepo
 import com.vaadin.flow.component.KeyDownEvent
 import com.vaadin.flow.component.KeyPressEvent
 import com.vaadin.flow.component.button.Button
@@ -14,7 +16,10 @@ import kotlin.concurrent.timer
 import kotlin.math.min
 import kotlin.random.Random
 
-class TypingPane : VerticalLayout() {
+class TypingPane(
+		private val userName: String,
+		private val repo: TypingRepo
+) : VerticalLayout() {
 
 	private var level = 0
 	private val exampleLabel = PngLabel(generateExample(level++))
@@ -68,6 +73,7 @@ class TypingPane : VerticalLayout() {
 									nextExerciseButton.isEnabled = true
 									nextExerciseButton.focus()
 									this.isEnabled = false
+									saveRecord()
 								}
 							}
 						}
@@ -124,6 +130,17 @@ class TypingPane : VerticalLayout() {
 		startTypingButton.focus()
 		nextExerciseButton.isEnabled = false
 		typingTime.time = 0L
+	}
+
+	private fun saveRecord() {
+		val now = Date()
+		val typingRecord = TypingRecord(
+//				SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(now),
+				now,
+				userName,
+				SimpleDateFormat("mm:ss.S").format(typingTime)
+		)
+		repo.save(typingRecord)
 	}
 
 	companion object {
