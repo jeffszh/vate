@@ -58,6 +58,10 @@ class PngLabel(text: String, initColor: CharStatus = CharStatus.NORMAL) : Horizo
 	operator fun get(i: Int) =
 			charList[i] to charStatusList[i]
 
+	fun allRight() = charStatusList.all {
+		it == CharStatus.CORRECT
+	}
+
 	enum class CharStatus {
 		NORMAL {
 			override val color = "black"

@@ -10,11 +10,13 @@ import com.vaadin.flow.component.html.Label
 import com.vaadin.flow.component.orderedlayout.FlexComponent
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout
 import com.vaadin.flow.component.orderedlayout.VerticalLayout
+import com.vaadin.flow.component.page.Push
 import com.vaadin.flow.router.BeforeEnterEvent
 import com.vaadin.flow.router.BeforeEnterObserver
 import com.vaadin.flow.router.Route
 
 @Route("")
+@Push
 class MainPage(vateRepo: VateRepo) : VerticalLayout(), BeforeEnterObserver {
 
 	private var userName = ""
