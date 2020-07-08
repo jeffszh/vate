@@ -7,21 +7,26 @@ import com.vaadin.flow.component.html.Label
 import com.vaadin.flow.component.orderedlayout.FlexComponent
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout
 import com.vaadin.flow.component.orderedlayout.VerticalLayout
+import java.lang.StringBuilder
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.concurrent.timer
+import kotlin.math.min
+import kotlin.random.Random
 
 class TypingPane : VerticalLayout() {
 
-	@Suppress("SpellCheckingInspection")
-	private val exampleText = "fdfd jkjk ffddjjkk fdjk jkfd dfdf kjkj dfjk"
-	private val exampleLabel = PngLabel(exampleText)
+	private var level = 0
+	private val exampleLabel = PngLabel(generateExample(level++))
 	private val inputLabel = PngLabel("")
-	private val nextExerciseButton = Button("下一题")
+	private val startTypingButton = Button("点击这里开始打字")
+	private val nextExerciseButton = Button("下一题") {
+		nextExercise()
+	}
+	private val typingTime = Date(0L)
 
 	init {
 		val timerLabel = Label("计时：")
-		val typingTime = Date(0L)
 		var typing = false
 		val df = SimpleDateFormat("mm:ss.S")
 		timer(period = 50) {
@@ -33,7 +38,7 @@ class TypingPane : VerticalLayout() {
 			}
 		}
 		add(HorizontalLayout(
-				Button("点击这里开始打字").apply {
+				startTypingButton.apply {
 					addFocusListener {
 						text = "正在打字，计时中"
 						typing = true
@@ -104,11 +109,51 @@ class TypingPane : VerticalLayout() {
 				return
 			}
 		}
-		" !@#$%^&*(),.'\"?/<>".forEach { c ->
+		" !@#$%^&*()-=_+[]{};'\\:\"|,./<>?".forEach { c ->
 			if (matcher(c)) {
 				consumer(c)
 				return
 			}
+		}
+	}
+
+	private fun nextExercise() {
+		exampleLabel.init(generateExample(level++))
+		inputLabel.init("")
+		startTypingButton.isEnabled = true
+		startTypingButton.focus()
+		nextExerciseButton.isEnabled = false
+		typingTime.time = 0L
+	}
+
+	companion object {
+		@Suppress("SpellCheckingInspection")
+		private const val ex1 = "dfjk"
+		@Suppress("SpellCheckingInspection")
+		private const val ex2 = "asl;"
+		@Suppress("SpellCheckingInspection")
+		private const val ex3 = "asdfjkl;"
+		private val levels = arrayOf(ex1, ex1, ex2, ex2, ex3)
+
+		private fun generateExample(level: Int): String {
+			val lv = min(level, levels.size - 1)
+			val exString = levels[lv]
+			val sb = StringBuilder()
+			repeat(8) {
+				repeat(4) {
+					sb.append(randomCharInString(exString))
+				}
+				sb.append(' ')
+			}
+			repeat(4) {
+				sb.append(randomCharInString(exString))
+			}
+			return sb.toString()
+		}
+
+		private fun randomCharInString(str: String): Char {
+			val i = Random.nextInt(str.length)
+			return str[i]
 		}
 	}
 

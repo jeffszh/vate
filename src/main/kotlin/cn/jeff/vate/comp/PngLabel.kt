@@ -12,7 +12,13 @@ class PngLabel(text: String, initColor: CharStatus = CharStatus.NORMAL) : Horizo
 	private val childList = LinkedList<Component>()
 
 	init {
+		init(text, initColor)
+	}
+
+	fun init(text: String, initColor: CharStatus = CharStatus.NORMAL) {
 		isSpacing = false
+		charList.clear()
+		charStatusList.clear()
 		text.forEach {
 			charList.add(it)
 			charStatusList.add(initColor)
