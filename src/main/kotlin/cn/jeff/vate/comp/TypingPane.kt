@@ -95,6 +95,10 @@ class TypingPane(
 		add(inputLabel)
 		add(nextExerciseButton)
 		nextExerciseButton.isEnabled = false
+
+		selectExercisePane.changeListener = {
+			exerciseChanged()
+		}
 	}
 
 	private fun forOneOfPrintableChars(matcher: (Char) -> Boolean, consumer: (Char) -> Unit) {
@@ -131,6 +135,10 @@ class TypingPane(
 		startTypingButton.focus()
 		nextExerciseButton.isEnabled = false
 		typingTime.time = 0L
+	}
+
+	private fun exerciseChanged() {
+		println("改选：${selectExercisePane.selectedExercise}, ${selectExercisePane.selectedExerciseLine}")
 	}
 
 	private fun saveRecord() {
