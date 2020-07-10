@@ -61,4 +61,12 @@ class SelectExercisePane : HorizontalLayout() {
 		lineSelector.value = 1
 	}
 
+	fun getExerciseByName(name: String?): Exercise {
+		return name?.run {
+			allExercises.find {
+				it.topic == this
+			}
+		} ?: allExercises[0]
+	}
+
 }

@@ -4,6 +4,7 @@ import cn.jeff.vate.comp.MyComp
 import cn.jeff.vate.comp.SelectExercisePane
 import cn.jeff.vate.comp.TypingPane
 import cn.jeff.vate.jpa.TypingRepo
+import cn.jeff.vate.jpa.UserRepo
 import cn.jeff.vate.jpa.VateRepo
 import cn.jeff.vate.utils.showMessage
 import com.vaadin.flow.component.UI
@@ -19,7 +20,11 @@ import com.vaadin.flow.router.Route
 
 @Route("")
 @Push
-class MainPage(vateRepo: VateRepo, typingRepo: TypingRepo) : VerticalLayout(), BeforeEnterObserver {
+class MainPage(
+		vateRepo: VateRepo,
+		typingRepo: TypingRepo,
+		userRepo: UserRepo
+) : VerticalLayout(), BeforeEnterObserver {
 
 	private var userName = ""
 
@@ -50,7 +55,7 @@ class MainPage(vateRepo: VateRepo, typingRepo: TypingRepo) : VerticalLayout(), B
 		val selectExercisePane = SelectExercisePane()
 		add(selectExercisePane)
 
-		add(TypingPane(userName, typingRepo, selectExercisePane))
+		add(TypingPane(userName, typingRepo, userRepo, selectExercisePane))
 	}
 
 	override fun beforeEnter(event: BeforeEnterEvent?) {

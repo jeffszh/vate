@@ -15,6 +15,8 @@ data class TypingRecord(
 
 		var user: String = "",
 
+		var exercise: String? = null,
+		var line: Int? = null,
 		var timeLen: String = ""
 
 )

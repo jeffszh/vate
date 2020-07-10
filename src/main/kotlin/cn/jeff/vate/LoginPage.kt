@@ -1,5 +1,6 @@
 package cn.jeff.vate
 
+import cn.jeff.vate.jpa.UserRepo
 import cn.jeff.vate.utils.showMessage
 import com.vaadin.flow.component.button.Button
 import com.vaadin.flow.component.orderedlayout.VerticalLayout
@@ -8,14 +9,11 @@ import com.vaadin.flow.component.textfield.TextField
 import com.vaadin.flow.router.Route
 
 @Route("login")
-class LoginPage : VerticalLayout() {
+class LoginPage(userRepo: UserRepo) : VerticalLayout() {
 
-	companion object {
-		val userMap = mapOf(
-				"Jasmine" to "",
-				"JeffSzh" to "choson"
-		)
-	}
+	private val userMap: Map<String, String> = userRepo.findAll().map {
+		it.userName to it.password
+	}.toMap()
 
 	init {
 		val tfUserName = TextField("用戶名", "請輸入用戶名")

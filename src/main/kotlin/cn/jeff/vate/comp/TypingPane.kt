@@ -2,6 +2,7 @@ package cn.jeff.vate.comp
 
 import cn.jeff.vate.jpa.TypingRecord
 import cn.jeff.vate.jpa.TypingRepo
+import cn.jeff.vate.jpa.UserRepo
 import com.vaadin.flow.component.KeyDownEvent
 import com.vaadin.flow.component.KeyPressEvent
 import com.vaadin.flow.component.button.Button
@@ -9,6 +10,7 @@ import com.vaadin.flow.component.html.Label
 import com.vaadin.flow.component.orderedlayout.FlexComponent
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout
 import com.vaadin.flow.component.orderedlayout.VerticalLayout
+import org.springframework.data.repository.findByIdOrNull
 import java.lang.StringBuilder
 import java.text.SimpleDateFormat
 import java.util.*
@@ -18,7 +20,8 @@ import kotlin.random.Random
 
 class TypingPane(
 		private val userName: String,
-		private val repo: TypingRepo,
+		private val typingRepo: TypingRepo,
+		private val userRepo: UserRepo,
 		private val selectExercisePane: SelectExercisePane
 ) : VerticalLayout() {
 
@@ -99,6 +102,11 @@ class TypingPane(
 		selectExercisePane.changeListener = {
 			exerciseChanged()
 		}
+
+		val user = userRepo.findByIdOrNull(userName)
+		val lastExerciseTopic = user?.lastExercise
+		val lastExercise = selectExercisePane.getExerciseByName(lastExerciseTopic)
+		selectExercisePane.selectedExercise = lastExercise
 	}
 
 	private fun forOneOfPrintableChars(matcher: (Char) -> Boolean, consumer: (Char) -> Unit) {
@@ -139,6 +147,11 @@ class TypingPane(
 
 	private fun exerciseChanged() {
 		println("改选：${selectExercisePane.selectedExercise}, ${selectExercisePane.selectedExerciseLine}")
+		val user = userRepo.findByIdOrNull(userName)
+		user?.let {
+			it.lastExercise = selectExercisePane.selectedExercise.topic
+			userRepo.save(it)
+		}
 	}
 
 	private fun saveRecord() {
@@ -147,9 +160,11 @@ class TypingPane(
 //				SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(now),
 				now,
 				userName,
+				selectExercisePane.selectedExercise.topic,
+				selectExercisePane.selectedExerciseLine,
 				SimpleDateFormat("mm:ss.S").format(typingTime)
 		)
-		repo.save(typingRecord)
+		typingRepo.save(typingRecord)
 	}
 
 	companion object {
