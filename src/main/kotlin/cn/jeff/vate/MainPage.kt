@@ -1,6 +1,7 @@
 package cn.jeff.vate
 
 import cn.jeff.vate.comp.MyComp
+import cn.jeff.vate.comp.SelectExercisePane
 import cn.jeff.vate.comp.TypingPane
 import cn.jeff.vate.jpa.TypingRepo
 import cn.jeff.vate.jpa.VateRepo
@@ -33,20 +34,23 @@ class MainPage(vateRepo: VateRepo, typingRepo: TypingRepo) : VerticalLayout(), B
 				},
 				Button("看看？") {
 					showMessage("别看了，开始打字练习吧！")
-				},
+				}.apply { isVisible = false },
 				Button("数据") {
 					val data = vateRepo.findAll()
 					showMessage("data.size=${data.size}")
 					if (data.isNotEmpty()) {
 						showMessage("${data[0]}")
 					}
-				}
+				}.apply { isVisible = false }
 		).apply {
 			defaultVerticalComponentAlignment = FlexComponent.Alignment.BASELINE
 		})
 		add(MyComp("Good good study, day day up!"))
 
-		add(TypingPane(userName, typingRepo))
+		val selectExercisePane = SelectExercisePane()
+		add(selectExercisePane)
+
+		add(TypingPane(userName, typingRepo, selectExercisePane))
 	}
 
 	override fun beforeEnter(event: BeforeEnterEvent?) {

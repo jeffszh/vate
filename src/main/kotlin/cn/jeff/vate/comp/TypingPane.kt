@@ -18,7 +18,8 @@ import kotlin.random.Random
 
 class TypingPane(
 		private val userName: String,
-		private val repo: TypingRepo
+		private val repo: TypingRepo,
+		private val selectExercisePane: SelectExercisePane
 ) : VerticalLayout() {
 
 	private var level = 0
