@@ -8,7 +8,7 @@ import com.vaadin.flow.component.select.Select
 class SelectExercisePane : HorizontalLayout() {
 
 	companion object {
-		val allExercises = arrayOf(
+		val allExercises: Array<Exercise> = arrayOf(
 				MiddleRowExercise(),
 				UpperRowExercise(),
 				LowerRowExercise(),
