@@ -13,6 +13,9 @@ class SelectExercisePane : HorizontalLayout() {
 				UpperRowExercise(),
 				LowerRowExercise(),
 				ThreeRowExercise()
+		// 数字行键位练习
+		// Shift键强化练习
+		// 约翰福音
 		)
 	}
 
