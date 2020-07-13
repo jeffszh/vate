@@ -11,12 +11,9 @@ import com.vaadin.flow.component.orderedlayout.FlexComponent
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout
 import com.vaadin.flow.component.orderedlayout.VerticalLayout
 import org.springframework.data.repository.findByIdOrNull
-import java.lang.StringBuilder
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.concurrent.timer
-import kotlin.math.min
-import kotlin.random.Random
 
 class TypingPane(
 		private val userName: String,
@@ -25,8 +22,7 @@ class TypingPane(
 		private val selectExercisePane: SelectExercisePane
 ) : VerticalLayout() {
 
-	private var level = 0
-	private val exampleLabel = PngLabel(generateExample(level++))
+	private val exampleLabel = PngLabel(" ")
 	private val inputLabel = PngLabel("")
 	private val startTypingButton = Button("点击这里开始打字")
 	private val nextExerciseButton = Button("下一题") {
@@ -137,8 +133,15 @@ class TypingPane(
 	}
 
 	private fun nextExercise() {
-		exampleLabel.init(generateExample(level++))
-		inputLabel.init("")
+		with(selectExercisePane) {
+			selectedExerciseLine = if (selectedExerciseLine < selectedExercise.lineCount) {
+				selectedExerciseLine + 1
+			} else {
+				1
+			}
+			exampleLabel.init(selectedExercise.generate(selectedExerciseLine))
+			inputLabel.init("")
+		}
 		startTypingButton.isEnabled = true
 		startTypingButton.focus()
 		nextExerciseButton.isEnabled = false
@@ -152,6 +155,8 @@ class TypingPane(
 			it.lastExercise = selectExercisePane.selectedExercise.topic
 			userRepo.save(it)
 		}
+		val example = selectExercisePane.selectedExercise.generate(selectExercisePane.selectedExerciseLine)
+		exampleLabel.init(example)
 	}
 
 	private fun saveRecord() {
@@ -165,37 +170,6 @@ class TypingPane(
 				SimpleDateFormat("mm:ss.S").format(typingTime)
 		)
 		typingRepo.save(typingRecord)
-	}
-
-	companion object {
-		@Suppress("SpellCheckingInspection")
-		private const val ex1 = "dfjk"
-		@Suppress("SpellCheckingInspection")
-		private const val ex2 = "asl;"
-		@Suppress("SpellCheckingInspection")
-		private const val ex3 = "asdfjkl;"
-		private val levels = arrayOf(ex1, ex1, ex2, ex2, ex3)
-
-		private fun generateExample(level: Int): String {
-			val lv = min(level, levels.size - 1)
-			val exString = levels[lv]
-			val sb = StringBuilder()
-			repeat(8) {
-				repeat(4) {
-					sb.append(randomCharInString(exString))
-				}
-				sb.append(' ')
-			}
-			repeat(4) {
-				sb.append(randomCharInString(exString))
-			}
-			return sb.toString()
-		}
-
-		private fun randomCharInString(str: String): Char {
-			val i = Random.nextInt(str.length)
-			return str[i]
-		}
 	}
 
 }

@@ -1,8 +1,6 @@
 package cn.jeff.vate.comp
 
-import cn.jeff.vate.model.Exercise
-import cn.jeff.vate.model.MiddleRowExercise
-import cn.jeff.vate.model.UpperRowExercise
+import cn.jeff.vate.model.*
 import cn.jeff.vate.utils.ReentrantChanger
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout
 import com.vaadin.flow.component.select.Select
@@ -12,7 +10,9 @@ class SelectExercisePane : HorizontalLayout() {
 	companion object {
 		val allExercises = arrayOf(
 				MiddleRowExercise(),
-				UpperRowExercise()
+				UpperRowExercise(),
+				LowerRowExercise(),
+				ThreeRowExercise()
 		)
 	}
 
@@ -49,6 +49,7 @@ class SelectExercisePane : HorizontalLayout() {
 		}
 		add(exerciseSelector)
 		lineSelector.label = "当前行"
+		lineSelector.width = "80px"
 		lineSelector.addValueChangeListener {
 			reentrantChanger.applyChange { }
 		}

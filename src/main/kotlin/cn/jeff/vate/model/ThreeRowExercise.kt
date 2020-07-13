@@ -4,12 +4,12 @@ import java.lang.StringBuilder
 import kotlin.math.min
 import kotlin.random.Random
 
-class UpperRowExercise : Exercise {
+class ThreeRowExercise : Exercise {
 
 	override fun toString() = topic
 
 	override val topic: String
-		get() = "上行键位练习"
+		get() = "三行键位练习"
 	override val lineCount: Int
 		get() = levels.size
 
@@ -17,23 +17,12 @@ class UpperRowExercise : Exercise {
 
 	companion object {
 		@Suppress("SpellCheckingInspection")
-		private const val ex1 = "dfjkerui"
-		@Suppress("SpellCheckingInspection")
-		private const val ex2 = "asl;qwop"
-		@Suppress("SpellCheckingInspection")
-		private const val ex3 = "asdfjklqweruiop"
-		@Suppress("SpellCheckingInspection")
-		private const val ex4 = "afghj;qrtyup"
-		@Suppress("SpellCheckingInspection")
-		private const val ex5 = "asdfghjkl;qwertyuiop"
-		@Suppress("SpellCheckingInspection")
-		private const val ex6 = "asdfghjkl;'\\qwertyuiop[]"
+		private const val ex1 = "qwertyuiop[]asdfghjkl;'\\zxcvbnm,./"
 		private val levels = arrayOf(
-				ex1, ex1, ex1, ex2, ex2, ex2,
-				ex3, ex3, ex3, ex3, ex3, ex3,
-				ex4, ex4, ex4,
-				ex5, ex5, ex5, ex5, ex5, ex5,
-				ex6, ex6, ex6, ex6, ex6, ex6, ex6, ex6, ex6
+				ex1, ex1, ex1, ex1,
+				ex1, ex1, ex1, ex1,
+				ex1, ex1, ex1, ex1,
+				ex1, ex1, ex1, ex1
 		)
 
 		private fun generateExample(level: Int): String {
