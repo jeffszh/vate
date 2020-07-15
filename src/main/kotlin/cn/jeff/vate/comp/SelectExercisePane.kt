@@ -12,10 +12,13 @@ class SelectExercisePane : HorizontalLayout() {
 				MiddleRowExercise(),
 				UpperRowExercise(),
 				LowerRowExercise(),
-				ThreeRowExercise()
-		// 数字行键位练习
-		// Shift键强化练习
-		// 约翰福音
+				ThreeRowExercise(),
+				DigitRowExercise(),
+				ShiftLetterExercise(),
+				ShiftPunctuationExercise(),
+				ShiftAllKeyExercise()
+				// Shift键强化练习
+				// 约翰福音
 		)
 	}
 
