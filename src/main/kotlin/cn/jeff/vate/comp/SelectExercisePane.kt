@@ -17,7 +17,9 @@ class SelectExercisePane : HorizontalLayout() {
 				ShiftLetterExercise(),
 				ShiftPunctuationExercise(),
 				ShiftAllKeyExercise(),
-				GospelOfJohnChapterOne()
+				GospelOfJohnChapterOne,
+				ActsChapterOne,
+				BookOfRomeChapterOne
 		)
 	}
 

@@ -158,6 +158,7 @@ class TypingPane(
 		}
 		val example = selectExercisePane.selectedExercise.generate(selectExercisePane.selectedExerciseLine)
 		exampleLabel.init(example)
+		inputLabel.init("")
 	}
 
 	private fun saveRecord() {

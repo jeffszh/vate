@@ -1,6 +1,6 @@
 package cn.jeff.vate.model
 
-class GospelOfJohnChapterOne : ArticleExercise() {
+object GospelOfJohnChapterOne : ArticleExercise() {
 
 	override val topic: String = "约翰福音第一章"
 
@@ -114,7 +114,6 @@ class GospelOfJohnChapterOne : ArticleExercise() {
 		under the fig tree. You shall see greater things than that."
 		He then added, "I tell you the truth, you shall see heaven open, 
 		and the angels of God ascending and descending on the Son of Man."
-		--end--
 	""".trimIndent()
 
 }
