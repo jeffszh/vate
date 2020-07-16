@@ -16,9 +16,8 @@ class SelectExercisePane : HorizontalLayout() {
 				DigitRowExercise(),
 				ShiftLetterExercise(),
 				ShiftPunctuationExercise(),
-				ShiftAllKeyExercise()
-				// Shift键强化练习
-				// 约翰福音
+				ShiftAllKeyExercise(),
+				GospelOfJohnChapterOne()
 		)
 	}
 

@@ -12,6 +12,8 @@ class PngLabel(text: String, initColor: CharStatus = CharStatus.NORMAL) : Horizo
 	private val childList = LinkedList<Component>()
 
 	init {
+//		style.set("background", "lime")
+		style.set("background", "#cef")
 		init(text, initColor)
 	}
 
