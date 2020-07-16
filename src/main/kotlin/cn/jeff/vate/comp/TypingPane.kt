@@ -14,6 +14,7 @@ import org.springframework.data.repository.findByIdOrNull
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.concurrent.timer
+import kotlin.math.roundToInt
 
 class TypingPane(
 		private val userName: String,
@@ -161,13 +162,17 @@ class TypingPane(
 
 	private fun saveRecord() {
 		val now = Date()
+		val timeInMinutes = typingTime.time.toDouble() / 1000.0 / 60.0
+		val speed = exampleLabel.length.toDouble() / timeInMinutes
+		val roundedSpeed = (speed * 10.0).roundToInt().toDouble() / 10.0
 		val typingRecord = TypingRecord(
 //				SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(now),
 				now,
 				userName,
 				selectExercisePane.selectedExercise.topic,
 				selectExercisePane.selectedExerciseLine,
-				SimpleDateFormat("mm:ss.S").format(typingTime)
+				SimpleDateFormat("mm:ss.S").format(typingTime),
+				"$roundedSpeed kps"
 		)
 		typingRepo.save(typingRecord)
 	}

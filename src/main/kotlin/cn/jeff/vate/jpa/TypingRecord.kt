@@ -17,6 +17,7 @@ data class TypingRecord(
 
 		var exercise: String? = null,
 		var line: Int? = null,
-		var timeLen: String = ""
+		var timeLen: String = "",
+		var speed: String? = null
 
 )
